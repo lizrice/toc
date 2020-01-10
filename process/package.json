@@ -9,6 +9,6 @@
     "mermaid.cli": "^0.5.1"
   },
   "scripts": {
-    "diagram": "./node_modules/.bin/mmdc -i diagram.mmd -o diagram.png"
+    "diagram": "./node_modules/.bin/mmdc -i proposalprocess.mmd -o proposalprocess.png"
   }
 }

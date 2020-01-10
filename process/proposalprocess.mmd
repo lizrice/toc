@@ -1,0 +1,50 @@
+%% This is the source for flowchart diagram
+%% See: https://mermaidjs.github.io/#/flowchart
+%% setup: `yarn install`  (in this directory)
+%% regenerate diagram: `npm run diagram`
+%% or use [mermaid live editor](https://mermaidjs.github.io/mermaid-live-editor)
+
+graph TD
+  subgraph Project maintainers
+    New(New Project proposal)-->Proposal
+    Proposal["Create proposal [1]"]
+    Close(Close issue) -.->|3 months| Wait
+    Wait[Project evolves]-.->|reapply| Proposal
+  end
+
+  subgraph TOC Triage Phase - 2 weeks max
+    Proposal --> TOCTriage
+    TOCTriage{"TOC member<br>initial triage [2]"} --> |not aligned| TOCTriageNo
+    TOCTriage --> |aligned| SIGReq[TOC requests<br>SIG recommendation]
+    TOCTriageNo[TOC discusses<br> with maintainers] -->Close
+  end
+
+  subgraph SIG Presentation Phase - around 1 month
+     SIGReq--> SIGPres
+     SIGPres["Project Presents to SIG [3]"] --> RecTemplate
+end
+
+  subgraph TOC Action - around 1 month
+    RecTemplate["SIG completes<br>recommendation template [4]"] -->|Recommendation = <br>reject / sandbox / proceed to DD| TOCReviewRec
+    TOCReviewRec{"TOC review<br>recommendation &<br>presentation [5]"}
+    TOCReviewRec --> |reject|TOCResponseNo
+    TOCResponseNo[TOC respond<br>to maintainers] --> Close
+    TOCReviewRec --> |incubation or<br> graduation|TOCIncubation
+    TOCReviewRec --> |sandbox|TOCSandbox
+    TOCSandbox{"TOC members<br>agree to sponsor<br>for Sandbox? [6]"} --> |yes|ProjSandbox(Project accepted<br>to Sandbox)
+    TOCSandbox --> |no|TOCResponseNo
+    TOCIncubation["TOC member(s)"<br>volunteer for DD]
+  end
+
+  subgraph Due Diligence - around 2 months
+    TOCIncubation--> DueDiligence
+    DueDiligence["Project, SIG & TOC<br>sponsors collaborate<br>on Due Diligence [7]"] --> DueDiligenceReport
+    DueDiligenceReport[DD Report in PR] --> PRReview
+    PRReview{TOC & community<br>comment on PR}-->|unresolved comments|DueDiligence
+    PRReview-->|comments resolved|Vote{"TOC vote [8]"}
+    Vote --> |yes|ProjAccept(Project accepted to<br>Incubation / Graduation)
+    Vote --> |no|Close
+  end
+
+
+
